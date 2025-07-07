@@ -9,10 +9,12 @@ document.addEventListener("keydown", HandleKey);
 
 function HandleClick() {
   PlaySound(this.textContent);
+  ButtonAnimation(this.textContent);
 }
 
 function HandleKey(event) {
   PlaySound(event.key.toLowerCase());
+  ButtonAnimation(event.key.toLowerCase());
 }
 
 function PlaySound(key) {
@@ -48,4 +50,11 @@ function PlaySound(key) {
     default:
       break;
   }
+}
+
+function ButtonAnimation(key) {
+  document.querySelector("." + key).classList.add("pressed");
+  setTimeout(function () {
+    document.querySelector("." + key).classList.remove("pressed");
+  }, 100);
 }
