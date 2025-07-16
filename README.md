@@ -27,4 +27,4 @@ HTML5 for structure 📄
 CSS3 for styling and animations 🎨
 
 JavaScript for interactivity and sound control ⚙️
-JavaScript for interactivity and sound control ⚙️
+
