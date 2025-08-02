@@ -40,7 +40,8 @@ h1 {
 }
 
 .set {
-  margin: 10% auto;
+  margin: 10% 0;
+  line-height: 200px;
 }
 
 .game-over {
