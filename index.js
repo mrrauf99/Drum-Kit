@@ -1,73 +1,59 @@
-var buttons = document.getElementsByTagName("button");
+const sounds = {
+  w: new Audio("sounds/tom-1.mp3"),
+  a: new Audio("sounds/tom-2.mp3"),
+  s: new Audio("sounds/tom-3.mp3"),
+  d: new Audio("sounds/tom-4.mp3"),
+  j: new Audio("sounds/snare.mp3"),
+  k: new Audio("sounds/crash.mp3"),
+  l: new Audio("sounds/kick-bass.mp3"),
+};
 
-for (var i = 0; i < buttons.length; i++) {
-  buttons[i].addEventListener("click", HandleClick);
-}
-// it attaches Event Listener to all buttons when page loads
+// touch and click event handler
+let isTouch = false;
 
-document.addEventListener("keydown", HandleKey);
+$("button").on("click touchstart", function (event) {
+  if (event.type == "touch") {
+    isTouch = true;
+  }
 
-function HandleClick() {
-  PlaySound(this.textContent);
-  ButtonAnimation(this.textContent);
-}
+  if (event.type == "click" && isTouch) {
+    return;
+  }
 
-function HandleKey(event) {
+  PlaySound($(this).text());
+  ButtonAnimation($(this).text());
+
+  setTimeout(function () {
+    isTouch = false;
+  }, 500);
+});
+
+// keydown event handler
+
+$(document).on("keydown", function (event) {
   PlaySound(event.key.toLowerCase());
   ButtonAnimation(event.key.toLowerCase());
-}
+});
 
 function PlaySound(key) {
-  switch (key) {
-    case "w":
-      var audio = new Audio("sounds/tom-1.mp3");
-      audio.play();
-      break;
-    case "a":
-      var audio = new Audio("sounds/tom-2.mp3");
-      audio.play();
-      break;
-    case "s":
-      var audio = new Audio("sounds/tom-3.mp3");
-      audio.play();
-      break;
-    case "d":
-      var audio = new Audio("sounds/tom-4.mp3");
-      audio.play();
-      break;
-    case "j":
-      var audio = new Audio("sounds/snare.mp3");
-      audio.play();
-      break;
-    case "k":
-      var audio = new Audio("sounds/crash.mp3");
-      audio.play();
-      break;
-    case "l":
-      var audio = new Audio("sounds/kick-bass.mp3");
-      audio.play();
-      break;
-    default:
-      break;
-  }
+  sounds[key].currentTime = 0; // Rewinds the sound to the beginning
+  sounds[key].play();
 }
 
 function ButtonAnimation(key) {
-  document.querySelector("." + key).classList.add("pressed");
+  $("." + key).addClass("pressed");
   setTimeout(function () {
-    document.querySelector("." + key).classList.remove("pressed");
+    $("." + key).removeClass("pressed");
   }, 100);
 }
 
 // To prevent double tap zoom in
 let lastTouchEnd = 0;
 
-document.addEventListener('touchend', function (event) {
+$(document).on("touchend", function (event) {
   const now = new Date().getTime();
   if (now - lastTouchEnd <= 300) {
     event.preventDefault(); // block zoom if it's a double tap
   }
-  lastTouchEnd = now; 
+  lastTouchEnd = now;
 });
-
-
