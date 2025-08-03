@@ -12,7 +12,7 @@ const sounds = {
 let isTouch = false;
 
 $("button").on("click touchstart", function (event) {
-  if (event.type == "touch") {
+  if (event.type == "touchstart") {
     isTouch = true;
   }
 
@@ -57,3 +57,4 @@ $(document).on("touchend", function (event) {
   }
   lastTouchEnd = now;
 });
+
