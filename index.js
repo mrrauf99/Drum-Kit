@@ -15,25 +15,8 @@ $("button").on("pointerdown", function () {
   ButtonAnimation(key);
 });
 
-// Flag to check if audio is unlocked
-let audioUnlocked = false;
-
-// Unlock audio on first user interaction
-function unlockAudio() {
-  if (!audioUnlocked) {
-    Object.values(sounds).forEach((sound) => {
-      sound.play().catch(() => {}); // attempt to play
-      sound.pause(); // immediately pause
-      sound.currentTime = 0;
-    });
-    audioUnlocked = true;
-    console.log("Audio unlocked!");
-  }
-}
-
 // Keyboard input
 $(document).on("keydown", function (event) {
-  unlockAudio(); //
   const key = event.key.toLowerCase();
   PlaySound(key);
   ButtonAnimation(key);
