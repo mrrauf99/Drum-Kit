@@ -8,53 +8,41 @@ const sounds = {
   l: new Audio("sounds/kick-bass.mp3"),
 };
 
-// touch and click event handler
-let isTouch = false;
-
-$("button").on("click touchstart", function (event) {
-  if (event.type == "touchstart") {
-    isTouch = true;
-  }
-
-  if (event.type == "click" && isTouch) {
-    return;
-  }
-
-  PlaySound($(this).text());
-  ButtonAnimation($(this).text());
-
-  setTimeout(function () {
-    isTouch = false;
-  }, 500);
+// Handle both mouse and touch
+$("button").on("pointerdown", function () {
+  const key = $(this).text().toLowerCase();
+  PlaySound(key);
+  ButtonAnimation(key);
 });
 
-// keydown event handler
-
+// Keyboard input
 $(document).on("keydown", function (event) {
-  PlaySound(event.key.toLowerCase());
-  ButtonAnimation(event.key.toLowerCase());
+  const key = event.key.toLowerCase();
+  PlaySound(key);
+  ButtonAnimation(key);
 });
 
+// Play sound safely
 function PlaySound(key) {
-  sounds[key].currentTime = 0; // Rewinds the sound to the beginning
-  sounds[key].play();
+  if (sounds[key]) {
+    sounds[key].currentTime = 0;
+    sounds[key].play();
+  }
 }
 
+// Button animation
 function ButtonAnimation(key) {
-  $("." + key).addClass("pressed");
-  setTimeout(function () {
-    $("." + key).removeClass("pressed");
-  }, 100);
+  const button = $("." + key);
+  button.addClass("pressed");
+  setTimeout(() => button.removeClass("pressed"), 100);
 }
 
-// To prevent double tap zoom in
+// Prevent double-tap zoom on mobile
 let lastTouchEnd = 0;
-
 $(document).on("touchend", function (event) {
-  const now = new Date().getTime();
+  const now = Date.now();
   if (now - lastTouchEnd <= 300) {
-    event.preventDefault(); // block zoom if it's a double tap
+    event.preventDefault();
   }
   lastTouchEnd = now;
 });
-
